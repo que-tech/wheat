@@ -1,8 +1,8 @@
 import type { AppProps } from 'next/app'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import Layout from '../components/Layout'
 import { AuthProvider } from '../contexts/AuthContext'
+import '../styles/globals.css'
 
 const darkTheme = createTheme({
   palette: {
@@ -22,9 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <AuthProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Component {...pageProps} />
       </AuthProvider>
     </ThemeProvider>
   )
