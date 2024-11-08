@@ -21,7 +21,7 @@ const database = getDatabase(app)
 interface UserData {
   balance?: number
   miningState?: 'idle' | 'mining' | 'claim'
-  miningEndTime?: number
+  miningEndTime?: number | null
   lastUpdated?: number
 }
 
@@ -38,7 +38,6 @@ export default function Dashboard() {
       return
     }
 
-    // Set up real-time listener for user data
     const userRef = ref(database, `users/${user.id}`)
     const unsubscribe = onValue(userRef, (snapshot) => {
       const data = snapshot.val() as UserData
@@ -163,4 +162,4 @@ export default function Dashboard() {
       </nav>
     </div>
   )
-            }
+                          }
