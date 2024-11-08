@@ -1,25 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { TelegramLoginButton } from '../components/TelegramLoginButton'
-import { verifyTelegramData, verifyToken } from '../lib/auth'
+import { verifyTelegramData } from '../lib/auth'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Home() {
-  const [user, setUser] = useState(null)
+  const { user, setUser } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken')
-    if (token) {
-      const userData = verifyToken(token)
-      if (userData) {
-        setUser(userData)
-        router.push('/dashboard')
-      } else {
-        localStorage.removeItem('authToken')
-      }
+    if (user) {
+      router.push('/dashboard')
     }
-  }, [router])
+  }, [user, router])
 
   const handleTelegramResponse = async (response) => {
     try {
