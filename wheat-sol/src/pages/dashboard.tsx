@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { verifyToken } from '../lib/auth'
 import { initializeApp } from 'firebase/app'
 import { getDatabase, ref, onValue, set } from 'firebase/database'
+import { useAuth } from '../contexts/AuthContext'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,30 +19,20 @@ const app = initializeApp(firebaseConfig)
 const database = getDatabase(app)
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null)
+  const { user, logout } = useAuth()
   const [balance, setBalance] = useState(0)
   const [miningState, setMiningState] = useState('idle') // 'idle', 'mining', 'claim'
   const [timeLeft, setTimeLeft] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken')
-    if (!token) {
+    if (!user) {
       router.push('/')
       return
     }
-
-    const userData = verifyToken(token)
-    if (!userData) {
-      localStorage.removeItem('authToken')
-      router.push('/')
-      return
-    }
-
-    setUser(userData)
 
     // Set up real-time listener for user data
-    const userRef = ref(database, `users/${userData.id}`)
+    const userRef = ref(database, `users/${user.id}`)
     const unsubscribe = onValue(userRef, (snapshot) => {
       const data = snapshot.val()
       if (data) {
@@ -53,7 +43,7 @@ export default function Dashboard() {
     })
 
     return () => unsubscribe()
-  }, [router])
+  }, [user, router])
 
   useEffect(() => {
     if (timeLeft > 0 && miningState === 'mining') {
@@ -147,6 +137,13 @@ export default function Dashboard() {
           <h2 className="text-xl font-semibold mb-4">Frens</h2>
           <p>Coming soon...</p>
         </div>
+
+        <button
+          onClick={logout}
+          className="mt-8 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+        >
+          Logout
+        </button>
       </main>
 
       <nav className="fixed bottom-0 left-0 right-0 bg-gray-800 p-4">
@@ -159,4 +156,4 @@ export default function Dashboard() {
       </nav>
     </div>
   )
-               }
+    }
