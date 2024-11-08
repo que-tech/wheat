@@ -14,6 +14,7 @@ export default function Home() {
   useEffect(() => {
     // Check if user exists and redirect
     if (user) {
+      console.log("Redirecting to dashboard, user:", user); // Debug log
       router.push('/dashboard')
     }
   }, [user, router])
@@ -27,14 +28,16 @@ export default function Home() {
       if (verifiedData && verifiedData.token) {
         // Store token first
         localStorage.setItem('authToken', verifiedData.token)
+        console.log("Token stored in localStorage:", verifiedData.token) // Debug log
         
         // Then update user state
         setUser(verifiedData.user)
+        console.log("User set in context:", verifiedData.user) // Debug log
         
-        // Wait a bit before redirecting to ensure state is updated
+        // Wait a bit longer before redirecting to ensure state is updated
         setTimeout(() => {
           router.push('/dashboard')
-        }, 100)
+        }, 500) // Increased delay to 500ms
       }
     } catch (error) {
       console.error('Authentication failed:', error)
