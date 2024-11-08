@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -10,6 +12,7 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
+    // Check if user exists and redirect
     if (user) {
       router.push('/dashboard')
     }
@@ -17,15 +20,30 @@ export default function Home() {
 
   const handleTelegramResponse = async (response: any) => {
     try {
+      console.log('Telegram response:', response) // Debug log
       const verifiedData = await verifyTelegramData(response)
-      if (verifiedData) {
+      console.log('Verified data:', verifiedData) // Debug log
+      
+      if (verifiedData && verifiedData.token) {
+        // Store token first
         localStorage.setItem('authToken', verifiedData.token)
+        
+        // Then update user state
         setUser(verifiedData.user)
-        router.push('/dashboard')
+        
+        // Wait a bit before redirecting to ensure state is updated
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 100)
       }
     } catch (error) {
       console.error('Authentication failed:', error)
     }
+  }
+
+  // Prevent flash of login button if user is already authenticated
+  if (user) {
+    return null
   }
 
   return (
@@ -35,12 +53,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold mb-8">
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-4 sm:px-20 text-center">
+        <h1 className="text-4xl sm:text-6xl font-bold mb-8">
           Welcome to Wheat-sol
         </h1>
 
-        {!user && (
+        <div className="w-full max-w-md">
           <TelegramLoginButton
             botName={process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME || ''}
             onAuth={handleTelegramResponse}
@@ -48,7 +66,7 @@ export default function Home() {
             cornerRadius={20}
             requestAccess="write"
           />
-        )}
+        </div>
       </main>
     </div>
   )
