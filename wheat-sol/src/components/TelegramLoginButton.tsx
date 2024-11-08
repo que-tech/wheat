@@ -16,7 +16,7 @@ interface TelegramUser {
 // Extend the Window interface to include our callback
 declare global {
   interface Window {
-    TelegramLoginCallback: (user: TelegramUser) => void
+    TelegramLoginCallback?: (user: TelegramUser) => void
   }
 }
 
@@ -53,7 +53,7 @@ export const TelegramLoginButton: React.FC<TelegramLoginButtonProps> = ({
       buttonEl.appendChild(script)
     }
 
-    window.TelegramLoginCallback = (user) => {
+    window.TelegramLoginCallback = (user: TelegramUser) => {
       onAuth(user)
     }
 
@@ -61,7 +61,8 @@ export const TelegramLoginButton: React.FC<TelegramLoginButtonProps> = ({
       if (buttonEl && script.parentNode === buttonEl) {
         buttonEl.removeChild(script)
       }
-      delete window.TelegramLoginCallback
+      // Instead of deleting, set to undefined
+      window.TelegramLoginCallback = undefined
     }
   }, [botName, onAuth, buttonSize, cornerRadius, requestAccess])
 
