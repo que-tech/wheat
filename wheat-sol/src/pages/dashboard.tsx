@@ -18,10 +18,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const database = getDatabase(app)
 
+interface UserData {
+  balance?: number
+  miningState?: 'idle' | 'mining' | 'claim'
+  miningEndTime?: number
+  lastUpdated?: number
+}
+
 export default function Dashboard() {
   const { user, logout } = useAuth()
   const [balance, setBalance] = useState(0)
-  const [miningState, setMiningState] = useState('idle') // 'idle', 'mining', 'claim'
+  const [miningState, setMiningState] = useState<'idle' | 'mining' | 'claim'>('idle')
   const [timeLeft, setTimeLeft] = useState(0)
   const router = useRouter()
 
@@ -34,7 +41,7 @@ export default function Dashboard() {
     // Set up real-time listener for user data
     const userRef = ref(database, `users/${user.id}`)
     const unsubscribe = onValue(userRef, (snapshot) => {
-      const data = snapshot.val()
+      const data = snapshot.val() as UserData
       if (data) {
         setBalance(data.balance || 0)
         setMiningState(data.miningState || 'idle')
@@ -78,7 +85,7 @@ export default function Dashboard() {
     setTimeLeft(0)
   }
 
-  const updateUserData = (data) => {
+  const updateUserData = (data: Partial<UserData>) => {
     if (user) {
       set(ref(database, `users/${user.id}`), {
         ...data,
@@ -156,4 +163,4 @@ export default function Dashboard() {
       </nav>
     </div>
   )
-    }
+            }
