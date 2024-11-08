@@ -15,7 +15,7 @@ export default function Home() {
     }
   }, [user, router])
 
-  const handleTelegramResponse = async (response) => {
+  const handleTelegramResponse = async (response: any) => {
     try {
       const verifiedData = await verifyTelegramData(response)
       if (verifiedData) {
@@ -42,7 +42,7 @@ export default function Home() {
 
         {!user && (
           <TelegramLoginButton
-            botName={process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME}
+            botName={process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME || ''}
             onAuth={handleTelegramResponse}
             buttonSize="large"
             cornerRadius={20}
