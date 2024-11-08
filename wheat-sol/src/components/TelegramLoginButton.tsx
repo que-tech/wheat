@@ -1,8 +1,28 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
+
+// Define the Telegram user type
+interface TelegramUser {
+  id: number
+  first_name: string
+  last_name?: string
+  username?: string
+  photo_url?: string
+  auth_date: number
+  hash: string
+}
+
+// Extend the Window interface to include our callback
+declare global {
+  interface Window {
+    TelegramLoginCallback: (user: TelegramUser) => void
+  }
+}
 
 interface TelegramLoginButtonProps {
   botName: string
-  onAuth: (user: any) => void
+  onAuth: (user: TelegramUser) => void
   buttonSize?: 'large' | 'medium' | 'small'
   cornerRadius?: number
   requestAccess?: string
@@ -38,7 +58,7 @@ export const TelegramLoginButton: React.FC<TelegramLoginButtonProps> = ({
     }
 
     return () => {
-      if (buttonEl) {
+      if (buttonEl && script.parentNode === buttonEl) {
         buttonEl.removeChild(script)
       }
       delete window.TelegramLoginCallback
