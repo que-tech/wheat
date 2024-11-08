@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import { verifyToken } from '../lib/auth'
+import { verifyToken, TelegramData } from '../lib/auth'
 
 interface User {
-  id: string
+  id: number // Changed from string to number to match TelegramData
   first_name: string
   last_name?: string
   username?: string
