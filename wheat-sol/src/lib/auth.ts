@@ -3,8 +3,7 @@ import jwt from 'jsonwebtoken'
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN as string
 
-// Define the TelegramData interface
-interface TelegramData {
+export interface TelegramData {
   [key: string]: string | number
   hash: string
   auth_date: number
