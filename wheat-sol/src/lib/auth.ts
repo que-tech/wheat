@@ -4,13 +4,14 @@ import jwt from 'jsonwebtoken'
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN as string
 
 export interface TelegramData {
-  [key: string]: string | number
   hash: string
   auth_date: number
   id: number
   first_name: string
+  last_name?: string
   username?: string
   photo_url?: string
+  [key: string]: string | number | undefined
 }
 
 export async function verifyTelegramData(telegramData: TelegramData) {
