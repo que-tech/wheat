@@ -1,0 +1,133 @@
+/* globals.css */
+
+/* Reset some basic styles to ensure consistency across browsers */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body styling */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #e0e0e0; /* Light text on a dark background */
+  background-color: #000000;
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  color: #00ff00; /* Primary color */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+  color: #66ff66; /* Slightly lighter for hover/focus state */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: 1em;
+  color: #cccccc; /* Softer color for paragraphs */
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0.5em 1em;
+  color: #ffffff;
+  background-color: #00ff00;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #66ff66;
+}
+
+/* Forms */
+input, textarea, select {
+  color: #ffffff;
+  background-color: #333333;
+  border: 1px solid #555555;
+  border-radius: 4px;
+  padding: 0.5em;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid #00ff00;
+}
+
+/* Lists */
+ul, ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+/* Custom Scrollbar for Dark Mode */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+/* Container to center and add padding */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+/* Card Styling */
+.card {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 1em;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+.card-content {
+  font-size: 1em;
+  color: #cccccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5em;
+  }
+
+  button {
+    width: 100%;
+  }
+}
